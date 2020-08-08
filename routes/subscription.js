@@ -61,7 +61,7 @@ router.post('/webhook',bodyParser.raw({type: 'application/json'}), (request, res
   let event;
 
   try {
-    event = stripe.webhooks.constructEvent(req.rawBody, sig, '123456789');
+    event = stripe.webhooks.constructEvent(request.rawBody, sig, '123456789');
   } catch (err) {
     return response.status(400).send(`Webhook Error: ${err.message}`);
   }
