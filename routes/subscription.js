@@ -30,34 +30,25 @@ router.post("/create",login_required,async(req,res)=>{
 	}
 })
 
+
 router.post("/cancel",login_required,async(req,res)=>{
 	const user = await User.findOne({email:req.user.email})
 	if(user.is_cancel){
 		res.status(401)
 		res.json({okay:false,msg:"Subscription already cancelled"})
 	}else{
-
-	stripe.subscriptions.del(
-	  user.subscription_id,
-	  function(err, confirmation) {
-	    // asynchronously called
-	  }
-	);
-
-	// stripe.subscriptions.update(user.subscription_id, {cancel_at_period_end: true});
-
-
+		stripe.subscriptions.update(user.subscription_id, {cancel_at_period_end: true});
 		user.is_cancel = true;
 		user.save()
 		res.json({okay:true})
 	}
 })
 
+
 router.post("/resume",login_required,async(req,res)=>{
 	const user = await User.findOne({email:req.user.email})
 	if(user.is_cancel){
-		// stripe.subscriptions.update(user.subscription_id, {cancel_at_period_end: false});
-
+		stripe.subscriptions.update(user.subscription_id, {cancel_at_period_end: false});
 		user.is_cancel = false;
 		user.save()
 		res.json({okay:true})
@@ -66,6 +57,7 @@ router.post("/resume",login_required,async(req,res)=>{
 		res.json({okay:false,msg:"Subscription already active"})
 	}
 })
+
 
 
 router.post('/webhook', bodyParser.raw({type: 'application/json'}), (req, res) => {
@@ -95,9 +87,7 @@ router.post('/webhook', bodyParser.raw({type: 'application/json'}), (req, res) =
     .catch((err)=>{console.log(err)})
   }
   else if(event.type === 'customer.subscription.deleted'){
-  		console.log(session)
         User.findOne({subscription_id:session.id}).then((user)=>{
-        	console.log(user)
     	if(user){
     		user.is_active = false;
     		user.customer_id = '';
@@ -105,7 +95,6 @@ router.post('/webhook', bodyParser.raw({type: 'application/json'}), (req, res) =
 			stripe.customers.del(
 			  user.customer_id,
 			  function(err, confirmation) {
-			  	console.log(confirmation)
 			  }
 			);
     		user.save()
