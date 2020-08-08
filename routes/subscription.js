@@ -55,27 +55,35 @@ router.post("/resume",login_required,async(req,res)=>{
 })
 
 
-router.post('/webhook',bodyParser.raw({type: 'application/json'}), (request, response) => {
-  const sig = request.headers['stripe-signature'];
+router.post('/webhook', bodyParser.raw({type: 'application/json'}), (req, res) => {
+
+
+  const sig = req.headers['stripe-signature'];
 
   let event;
 
   try {
-    event = stripe.webhooks.constructEvent(request.rawBody, sig, '123456789');
+    event = stripe.webhooks.constructEvent(req.body, sig, 'whsec_U818tGj1cFGedAvgtaURHVam7q7vbsky');
   } catch (err) {
-    return response.status(400).send(`Webhook Error: ${err.message}`);
+    console.log(`❌ Error message: ${err.message}`);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
-  // Handle the checkout.session.completed event
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
-
-    // Fulfill the purchase...
-    console.log(session)
+    User.findOne({email:session.customer_email}).then((user)=>{
+    	if(user){
+    		user.customer_id = session.customer;
+    		user.subscription_id = session.subscription
+    		user.save()
+    	}
+    })
+    .catch((err)=>{})
   }
 
-  // Return a response to acknowledge receipt of the event
-  response.json({received: true});
+
+
+  res.json({received: true});
 });
 
 module.exports = router
