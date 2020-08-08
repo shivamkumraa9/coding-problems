@@ -36,6 +36,14 @@ router.post("/cancel",login_required,async(req,res)=>{
 		res.status(401)
 		res.json({okay:false,msg:"Subscription already cancelled"})
 	}else{
+
+	stripe.subscriptions.del(
+	  user.subscription_id,
+	  function(err, confirmation) {
+	    // asynchronously called
+	  }
+	);
+
 		user.is_cancel = true;
 		user.save()
 		res.json({okay:true})
@@ -68,12 +76,10 @@ router.post('/webhook', bodyParser.raw({type: 'application/json'}), (req, res) =
     console.log(`❌ Error message: ${err.message}`);
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
+  const session = event.data.object;
 
   if (event.type === 'checkout.session.completed') {
-    const session = event.data.object;
-    console.log(session)
-    User.findOne({email:session.customer_email}).then((user)=>{
-    	console.log(user)
+        User.findOne({email:session.customer_email}).then((user)=>{
     	if(user){
     		user.is_active = true;
     		user.customer_id = session.customer;
@@ -83,9 +89,22 @@ router.post('/webhook', bodyParser.raw({type: 'application/json'}), (req, res) =
     })
     .catch((err)=>{console.log(err)})
   }
+  else if(event.type === 'customer.subscription.deleted'){
+  		console.log(session)
+        User.findOne({email:session.customer_email}).then((user)=>{
+    	if(user){
+    		user.is_active = false;
+    		user.customer_id = '';
+    		user.subscription_id = ''
+			stripe.customers.del(
+			  user.customer_id,
+			  function(err, confirmation) {
+			  }
+			);
+    		user.save()
+    	}
 
-
-
+})}
   res.json({received: true});
 });
 
