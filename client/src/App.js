@@ -11,6 +11,9 @@ import Register from './components/Register'
 import Logout from './components/Logout'
 import QuestionList from './components/QuestionList'
 import Question from './components/Question'
+import Success from './components/Success'
+import Cancel from './components/Cancel'
+
 
 import LoginContext from './contexts/contexts'
 
@@ -27,6 +30,8 @@ function App() {
       <Route path="/questions" component={QuestionList} />
       <Route path="/question/:id" component={Question} />
       <Route path="/logout" component={Logout} />
+      <Route path="/success" component={Success} />
+      <Route path="/cancel" component={Cancel} />
     	</BrowserRouter>
     	</LoginContext.Provider>
   );

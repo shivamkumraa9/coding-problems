@@ -4,12 +4,18 @@ import Axios from 'axios';
 
 import LoginContext from '../contexts/contexts'
 
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe('pk_test_51GzkYJAkCUXrZtDnOCzWLJB5vHezqcNLrZMy4ctkVrF72uChi6FkmjiN0eXTfUgWG4Mx4x8GIpTiqt1Rsbzqm4Kc00bKGdKiSK');
+
+
 const Profile = () => {
 	const {loggedin,setloggedin} = React.useContext(LoginContext);
 
 	const [loading,setloading] = React.useState(false);
 
 	const [data,setdata] = React.useState({});
+
 
 	let isCancelled = false;
 
@@ -36,6 +42,19 @@ const Profile = () => {
 	}
 
 	const subscribe = (event)=>{
+		Axios.post("/api/subscriptions/create/",{token:localStorage.getItem('token')})
+		.then(async(response)=>{
+			if(!isCancelled){
+				if(response.data.okay){
+				    const stripe = await stripePromise;
+				    const { error } = await stripe.redirectToCheckout({
+				      sessionId:response.data.id
+				    });
+				}
+			}
+		})
+		.catch((err)=>{
+		})
 
 	}
 
@@ -60,6 +79,7 @@ const Profile = () => {
 		.catch((err)=>{
 		})
 	}
+
 
 	return(
 		<div className="container text-center mt-5">

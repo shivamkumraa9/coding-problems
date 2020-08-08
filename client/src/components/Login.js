@@ -19,7 +19,7 @@ const Login = () => {
 	const handleSubmit = async (event)=> {
 		event.preventDefault();
 		setisloading(true)
-		Axios.post("http://localhost:8000/api/auth/login",{email:state.email,password:state.password})
+		Axios.post("/api/auth/login",{email:state.email,password:state.password})
 		.then((response)=>{
 			if(response.data.okay){
 				localStorage.setItem('token',response.data.token)

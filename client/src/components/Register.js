@@ -29,7 +29,7 @@ const Register = () => {
 		if(state.password1.length > 5){
 			if(state.password1 === state.password2){
 				setisloading(true)
-				Axios.post("http://localhost:8000/api/auth/register",{username:state.username,email:state.email,password:state.password1})
+				Axios.post("/api/auth/register",{username:state.username,email:state.email,password:state.password1})
 				.then((response)=>{
 					if(response.data.okay){
 						setredirect(true)
