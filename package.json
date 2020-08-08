@@ -5,9 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index",
-    "start":"node index",
+    "start": "node index",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false && cd frontend && npm install && npm run build"
-
   },
   "author": "",
   "license": "ISC",
@@ -18,6 +17,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.27",
     "nodemon": "^2.0.4",
+    "path": "^0.12.7",
     "stripe": "^8.83.0"
   }
 }
