@@ -44,6 +44,9 @@ router.post("/cancel",login_required,async(req,res)=>{
 	  }
 	);
 
+	// stripe.subscriptions.update(user.subscription_id, {cancel_at_period_end: true});
+
+
 		user.is_cancel = true;
 		user.save()
 		res.json({okay:true})
@@ -53,6 +56,8 @@ router.post("/cancel",login_required,async(req,res)=>{
 router.post("/resume",login_required,async(req,res)=>{
 	const user = await User.findOne({email:req.user.email})
 	if(user.is_cancel){
+		// stripe.subscriptions.update(user.subscription_id, {cancel_at_period_end: false});
+
 		user.is_cancel = false;
 		user.save()
 		res.json({okay:true})
@@ -91,7 +96,8 @@ router.post('/webhook', bodyParser.raw({type: 'application/json'}), (req, res) =
   }
   else if(event.type === 'customer.subscription.deleted'){
   		console.log(session)
-        User.findOne({email:session.customer_email}).then((user)=>{
+        User.findOne({subscription_id:session.id}).then((user)=>{
+        	console.log(user)
     	if(user){
     		user.is_active = false;
     		user.customer_id = '';
@@ -99,6 +105,7 @@ router.post('/webhook', bodyParser.raw({type: 'application/json'}), (req, res) =
 			stripe.customers.del(
 			  user.customer_id,
 			  function(err, confirmation) {
+			  	console.log(confirmation)
 			  }
 			);
     		user.save()
