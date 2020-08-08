@@ -15,7 +15,7 @@ const Profile = () => {
 
 	React.useEffect(() => {
 		if(loggedin){
-			Axios.post("http://localhost:8000/api/auth/profile/",{token:localStorage.getItem('token')})
+			Axios.post("/api/auth/profile/",{token:localStorage.getItem('token')})
 			.then((response)=>{
 				if(!isCancelled){
 					setloading(response.data)
@@ -40,7 +40,7 @@ const Profile = () => {
 	}
 
 	const cancel = (event)=>{
-		Axios.post("http://localhost:8000/api/subscriptions/cancel/",{token:localStorage.getItem('token')})
+		Axios.post("/api/subscriptions/cancel/",{token:localStorage.getItem('token')})
 		.then((response)=>{
 			if(!isCancelled){
 				setloading({...loading,is_cancel:true})
@@ -51,7 +51,7 @@ const Profile = () => {
 	}
 
 	const resume = (event)=>{
-		Axios.post("http://localhost:8000/api/subscriptions/resume/",{token:localStorage.getItem('token')})
+		Axios.post("/api/subscriptions/resume/",{token:localStorage.getItem('token')})
 		.then((response)=>{
 			if(!isCancelled){
 				setloading({...loading,is_cancel:false})

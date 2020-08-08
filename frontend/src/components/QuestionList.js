@@ -10,7 +10,7 @@ const QuestionList = () =>{
 	const [loading,setloading] = React.useState({load:true,seemore:2,questions:[]});
 	React.useEffect(() => {
 		if(loggedin){
-			Axios.post("http://localhost:8000/api/questions/questions/1",{token:localStorage.getItem('token')})
+			Axios.post("/api/questions/questions/1",{token:localStorage.getItem('token')})
 			.then((response)=>{
 				if(!isCancelled){
 					setloading({load:false,seemore:loading.seemore,questions:response.data.questions})
@@ -27,7 +27,7 @@ const QuestionList = () =>{
 	},[]);
 
 	const onClick = (event) =>{
-		Axios.post(`http://localhost:8000/api/questions/questions/${loading.seemore}`,{token:localStorage.getItem('token')})
+		Axios.post(`/api/questions/questions/${loading.seemore}`,{token:localStorage.getItem('token')})
 		.then((response)=>{
 			if(!isCancelled){
 				const ques = response.data.questions

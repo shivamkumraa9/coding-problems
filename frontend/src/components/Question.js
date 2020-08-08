@@ -10,7 +10,7 @@ const Question = (props) =>{
 	const [loading,setloading] = React.useState({load:true,question:false});
 	React.useEffect(() => {
 		if(loggedin){
-			Axios.post(`http://localhost:8000/api/questions/question/${props.match.params.id}`,{token:localStorage.getItem('token')})
+			Axios.post(`/api/questions/question/${props.match.params.id}`,{token:localStorage.getItem('token')})
 			.then((response)=>{
 				if(!isCancelled){
 					setloading({load:false,question:response.data})
