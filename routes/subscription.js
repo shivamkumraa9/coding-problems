@@ -71,14 +71,17 @@ router.post('/webhook', bodyParser.raw({type: 'application/json'}), (req, res) =
 
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
+    console.log(session)
     User.findOne({email:session.customer_email}).then((user)=>{
+    	console.log(user)
     	if(user){
+    		user.is_active = true;
     		user.customer_id = session.customer;
     		user.subscription_id = session.subscription
     		user.save()
     	}
     })
-    .catch((err)=>{})
+    .catch((err)=>{console.log(err)})
   }
 
 
