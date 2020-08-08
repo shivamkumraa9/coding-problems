@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user')
+const bodyParser = require('body-parser');
+
 const stripe = require('stripe')('sk_test_51GzkYJAkCUXrZtDnbcFTP9srjGSW6Hp15wcNVjsQO5sSJQeEhLwvISsZgESjCqULg9bySvT8JPykaCMe3pd1kUxC00Uvkv2jDx');
 
 const login_required = require('../extras/login_required')
@@ -52,7 +54,8 @@ router.post("/resume",login_required,async(req,res)=>{
 	}
 })
 
-router.post('/webhook', (request, response) => {
+
+router.post('/webhook',bodyParser.raw({type: 'application/json'}), (request, response) => {
   const sig = request.headers['stripe-signature'];
 
   let event;
