@@ -59,16 +59,34 @@ const QuestionList = () =>{
 			</div>
 			:
 			<>
+			<div className="row justify-content-center">
+			<div className="col-md-8">
+			<ul className="list-group">
 			 {loading.questions.map((element,index)=>{
-			 	return <div key={index}><Link to={`/question/${element.id_}`}>{element.name}</Link><br/></div>
+			 	return (
+			 		<div key={index}>
+			 			<Link to={`/question/${element.id_}`} style={{textDecoration:"none"}}>
+						  <li className="pt-3 pb-3 answer-item list-group-item d-flex justify-content-between align-items-center shadow">
+						    <h4>{element.name}</h4>
+						    <span className="badge">
+						    	<button type="button" className="btn btn-outline-success">Solve Challange</button>
+
+						    </span>
+						  </li>
+			 			</Link>
+			 		</div>
+			 	)
 			 })}
+			 </ul>
+			 </div>
+			 </div>
 
 			 {
 			 	loading.seemore
 			 	?
-			 	<button type="button" className="btn btn-primary" onClick={onClick}>See More</button>
+			 	<button type="button" className="btn btn-success mt-3 mb-5" onClick={onClick}>See More</button>
 			 	:
-			 	<p>No More Questions</p>
+			 	<p className="mt-3  mb-5">No More Questions</p>
 			 }
 			</>
 		}

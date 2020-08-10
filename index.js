@@ -16,7 +16,7 @@ app.use((req, res, next) => {
   }
 });
 
-mongoose.connect('mongodb+srv://user1:testing123@cluster0.bu5td.mongodb.net/test?retryWrites=true&w=majority',{ useNewUrlParser: true ,useUnifiedTopology: true})
+mongoose.connect(process.env.DB,{ useNewUrlParser: true ,useUnifiedTopology: true})
 				.then(()=> console.log("DB Conneted"))
 				.catch((err)=> console.log(err))
 

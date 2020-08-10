@@ -42,15 +42,47 @@ const Question = (props) =>{
 			</div>
 			:
 			<>
-			<h1>{loading.question.name}</h1>
-			<p>{loading.question.question}</p>
-			{
-				loading.question.answer
-				?
-				<p>{loading.question.answer}</p>
-				:
-				<p>Please Upgrade to see the answer</p>
-			}
+
+
+			<div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			  <div className="modal-dialog modal-lg">
+			    <div className="modal-content">
+			      <div className="modal-header">
+			        <h5 className="modal-title" id="exampleModalLabel">Solution</h5>
+			        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div className="modal-body">
+            <pre className="language-python"><code className="language-python">{loading.question.answer}</code></pre>  
+			      </div>
+			    </div>
+			  </div>
+			</div>
+
+			  <div className="row justify-content-center">
+			    <div className="col-md-8">
+					<div className="card shadow" style={{ border:"none" }}>
+					  <div className="card-body">
+					    <h3 className="mb-3">{loading.question.name}</h3>
+					    <p className="card-text">
+					    	{loading.question.question}
+					    </p>
+					    
+						{
+							loading.question.answer
+							?
+							<button className="btn btn-outline-success" data-toggle="modal" data-target="#exampleModal">Reveal Solution</button>
+							:
+							<button disabled className="btn btn-outline-danger">Upgrade To See Answer</button>
+						}
+
+					  </div>
+					</div>
+			    </div>
+			  </div>
+			
+			<p></p>
 			</>
 		}
 		</div>

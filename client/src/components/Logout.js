@@ -10,9 +10,12 @@ const Logout = () => {
 		localStorage.setItem('token','');
 	},[])
 	return (
-		<>
-			<h1>You Have Been Logged Out</h1>
-		</>
+		<div className="container mt-3 text-center">
+
+		<div className="alert alert-danger" role="alert">
+		  You Have Been Logged Out
+		</div>
+		</div>
 	)
 }
 

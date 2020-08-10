@@ -90,22 +90,41 @@ const Profile = () => {
 			  <span className="sr-only">Loading...</span>
 			</div>
 			:
-			<>
-			<h2>{loading.username}</h2>
-			<h2>{loading.email}</h2>
-			{
-				loading.is_active
-				?
-					loading.is_cancel
+			<div className="row">
+				<div className="col-md-4">
+				</div>
+				<div className="col-md-4">
+				{
+					loading.is_active && loading.is_cancel
 					?
-					<button type="button" onClick={resume} className="btn btn-primary">Resume</button>
+						<div className="alert alert-danger" role="alert">
+						  Subscription will end on next billing date
+						</div>
 					:
-					<button type="button" onClick={cancel}  className="btn btn-danger">Cancel</button>
-				:
-				<button type="button" onClick={subscribe} className="btn btn-primary">Subscribe</button>
-			}
-			
-			</>
+					""
+				}
+				  <div className="card p-4 shadow" style={{border:"none"}}>
+					<h2>Welcome {loading.username}!</h2>
+					{
+						loading.is_active
+						?
+							loading.is_cancel
+							?
+							<>
+							<button type="button" onClick={resume} className="btn btn-primary">Resume Subscription</button>
+							
+							</>
+							:
+							<button type="button" onClick={cancel}  className="btn btn-danger">Cancel Subscription</button>	
+						:
+						<button type="button" onClick={subscribe} className="btn btn-success">Subscribe for 8$</button>
+					}					
+				  </div>
+				</div>
+				<div className="col-md-4">
+				</div>
+
+			</div>
 		}
 		</div>
 	)

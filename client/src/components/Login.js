@@ -40,8 +40,13 @@ const Login = () => {
 		)
 	}
 	return(
-		<div className="container">
-		<h1 className="text-center mt-5">Login Here</h1>
+		<div className="container mt-5">
+		<div className="row">
+		<div className="col-md-3">
+		</div>
+		<div className="col-md-6">
+		<div className="card p-4 shadow" style={{border:"none"}}>
+		<h1 className="text-center">Login Here</h1>
 		{
 			state.error
 			?
@@ -51,7 +56,7 @@ const Login = () => {
 			:
 			''
 		}
-		<form onSubmit={handleSubmit}>		
+		<form onSubmit={handleSubmit} className="mt-2">		
 		  <div className="form-group">
 		    <label htmlFor="exampleInputEmail1">Email address</label>
 		    <input name="email" type="email" onChange={handleChange} required className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />  
@@ -70,7 +75,11 @@ const Login = () => {
 		  		<button type="submit" className="btn btn-primary">Submit</button>
 		  }
   		</form>
-
+  		</div>
+		</div>
+		<div className="col-md-3">
+		</div>
+		</div>
   		</div> 
 	)
 }

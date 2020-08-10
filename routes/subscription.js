@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require('../models/user')
 const bodyParser = require('body-parser');
 
-const stripe = require('stripe')('sk_test_51GzkYJAkCUXrZtDnbcFTP9srjGSW6Hp15wcNVjsQO5sSJQeEhLwvISsZgESjCqULg9bySvT8JPykaCMe3pd1kUxC00Uvkv2jDx');
+const stripe = require('stripe')(process.env.STRIPE);
 
 const login_required = require('../extras/login_required')
 
@@ -68,7 +68,7 @@ router.post('/webhook', bodyParser.raw({type: 'application/json'}), (req, res) =
   let event;
 
   try {
-    event = stripe.webhooks.constructEvent(req.body, sig, 'whsec_U818tGj1cFGedAvgtaURHVam7q7vbsky');
+    event = stripe.webhooks.constructEvent(req.body, sig, process.env.WEBSECRET);
   } catch (err) {
     console.log(`❌ Error message: ${err.message}`);
     return res.status(400).send(`Webhook Error: ${err.message}`);
@@ -79,6 +79,7 @@ router.post('/webhook', bodyParser.raw({type: 'application/json'}), (req, res) =
         User.findOne({email:session.customer_email}).then((user)=>{
     	if(user){
     		user.is_active = true;
+    		user.is_cancel = false
     		user.customer_id = session.customer;
     		user.subscription_id = session.subscription
     		user.save()
@@ -90,6 +91,7 @@ router.post('/webhook', bodyParser.raw({type: 'application/json'}), (req, res) =
         User.findOne({subscription_id:session.id}).then((user)=>{
     	if(user){
     		user.is_active = false;
+    		user.is_cancel = false
     		user.customer_id = '';
     		user.subscription_id = ''
 			stripe.customers.del(

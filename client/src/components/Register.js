@@ -62,8 +62,13 @@ const Register = () => {
 		)
 	}else{
 	return(
-		<div className="container">
-		<h1 className="text-center mt-5">Register Here</h1>
+		<div className="container mt-5">
+		<div className="row">
+		<div className="col-md-3">
+		</div>
+		<div className="col-md-6">
+		<div className="card p-4 shadow" style={{border:"none"}}>
+		<h1 className="text-center">Register Here</h1>
 		<form onSubmit={handleSubmit}>
 		  <div className="form-group">
 		    <label htmlFor="exampleInputName1">Full Name</label>
@@ -100,7 +105,11 @@ const Register = () => {
 		  		<button type="submit" className="btn btn-primary">Submit</button>
 		  }
   		</form>
-
+  		</div>
+		</div>
+		<div className="col-md-3">
+		</div>
+		</div>
   		</div> 
 	)
 	}
