@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 module.exports = (req,res,next) =>{
 	const token = req.body.token;
 	if (token){
-		const user = jwt.verify(token,"shhhh")
+		const user = jwt.verify(token,process.env.TOKEN)
 		if(user){
 				req.user = user
 				next()
